@@ -8,7 +8,7 @@ def game():
 
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
-    RED = (255, 0, 0)
+    RED = (255, 20, 20)
     GREEN = (0, 255, 0)
     BLUE = (0, 0, 255)
     HIGHT = 500
@@ -22,7 +22,7 @@ def game():
     pygame.init()
     font_stile = pygame.font.SysFont(None, 22)
     score_font = pygame.font.SysFont("comicsansms", 25)
-    snake_speed = 20
+    snake_speed = 10
     snake_body = []
     length = 1
     clock = pygame.time.Clock()
@@ -35,6 +35,7 @@ def game():
     def newblock(snake_body):
         for x in snake_body:
             pygame.draw.rect(screen, RED, [x[0], x[1], 10, 10])
+
     def message(msg, color):
         mes = font_stile.render(msg, True, color)
         screen.blit(mes, [WIDTH / 16, HIGHT / 2])
