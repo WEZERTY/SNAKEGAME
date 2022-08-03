@@ -33,8 +33,8 @@ def game():
         screen.blit(mes, [0, 0])
 
     def newblock(snake_body):
-        for x in snake_body:
-            pygame.draw.rect(screen, RED, [x[0], x[1], 10, 10])
+        for x in snake_body[0:len(snake_body) - 1]:
+            pygame.draw.rect(screen, GREEN, [x[0], x[1], 10, 10])
 
     def message(msg, color):
         mes = font_stile.render(msg, True, color)
@@ -71,6 +71,7 @@ def game():
     food = pygame.transform.scale(random.choice(food_zmei), (10, 10))
     food.set_colorkey(WHITE)
     foodrect = food.get_rect(x=foodx, y=foody)
+    snake_image = pygame.transform.scale(pygame.image.load(path.join(imagedir, "HeadT.png")).convert(),(10, 10))
 
     run = True
     end = False
@@ -96,15 +97,23 @@ def game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     x = -10
+                    snake_image = pygame.transform.scale(pygame.image.load(path.join(imagedir, "HeadL.png")).convert(),
+                                                         (10, 10))
                     y = 0
                 elif event.key == pygame.K_RIGHT:
                     x = 10
+                    snake_image = pygame.transform.scale(pygame.image.load(path.join(imagedir, "HeadR.png")).convert(),
+                                                         (10, 10))
                     y = 0
                 elif event.key == pygame.K_DOWN:
                     y = 10
+                    snake_image = pygame.transform.scale(pygame.image.load(path.join(imagedir, "HeadB.png")).convert(),
+                                                         (10, 10))
                     x = 0
                 elif event.key == pygame.K_UP:
                     y = -10
+                    snake_image = pygame.transform.scale(pygame.image.load(path.join(imagedir, "HeadT.png")).convert(),
+                                                         (10, 10))
                     x = 0
         xcor += x
         ycor += y
@@ -120,7 +129,6 @@ def game():
             foodrect = food.get_rect(x=foodx, y=foody)
         screen.fill(BLUE)
         screen.blit(bg, bg_rect)
-        pygame.draw.rect(screen, RED, (xcor, ycor, 10, 10))
         screen.blit(food, foodrect)
     #   pygame.draw.rect(screen, BLUE, (foodx, foody, 10, 10))
         snake_head = []
@@ -129,10 +137,13 @@ def game():
         snake_body.append(snake_head)
         if len(snake_body) > length:
             del snake_body[0]
-            newblock(snake_body)
+        newblock(snake_body)
         for z in snake_body[:-1]:
             if z == snake_head:
                 end = True
+        snake_image.set_colorkey(BLACK)
+        snake_rect = snake_image.get_rect(x=xcor, y=ycor)
+        screen.blit(snake_image, snake_rect)
         snakescore(length -1)
         pygame.display.update()
         pygame.display.flip()
